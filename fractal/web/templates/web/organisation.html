@@ -1,0 +1,50 @@
+{% extends "web/base.html" %}
+
+{% block title %}
+{% if single %}
+	{{ organisations|first }}
+{% else %}
+	Organisation list
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% for organisation in organisations %}
+{% if edit %}<form action="{% url 'web:organisation' organisation.slug%}" method='post'>{% csrf_token %}{{ form.errors }}{% endif %}
+<div class='row'>
+	<div class='col-md-2'>
+		<center><img class='img-responsive img-rounded' src="/media/organisation/logos/{{ organisation.logo }}"></center>
+		{% if edit %}<label for"id_logo">Change logo</label>{{ form.logo }}{% endif %}
+	</div>
+
+	<div class='col-md-10'>
+	{% if edit %}
+		<label for"id_name">Name</label><input type="text" class="form-control" id="id_name" name="name" placeholder="Name" value="{{ organisation.name }}">
+		<label for"id_url">Website URL</label><input type="text" class="form-control" id="id_url" name="url" placeholder="Website URL" value="{{ organisation.url }}">
+		<label for"id_description">Description</label><textarea class="form-control" rows="10" id="id_description" name="description">{{ organisation.description }}</textarea>
+		<button type="submit" class="btn btn-default">Save</button></form>
+	{% else %}
+		<h1>{{ organisation.name }}</h1>
+		{% if organisation.url %}
+			<a href="{{ organisation.url }}">{{organisation.url}}</a>
+		{% endif %}
+		<p>{{ organisation.description }}</p>
+		{% if not single %}
+			<p><a href="{% url 'web:organisation' organisation.slug %}">[more detail]</a></p>
+		{% endif %}
+
+		{% if organisation.people.all|length > 0 and single %}
+			<p>
+			{% for person in organisation.people.all %}
+				<div class='col-md-1'><a href="{% url 'web:people' person.fullname_underscore %}"><img class="img-responsive img-circle" src="/media/organisation/photos/{{ person.photo }}"></a></div>
+			{% endfor %}
+			</p>
+		{% endif %}
+
+	{% endif %}
+	</div>
+</div>
+{% endfor %}
+
+{% endblock %}
