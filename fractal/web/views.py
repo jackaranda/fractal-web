@@ -35,7 +35,7 @@ class PersonForm(ModelForm):
 
 def index(request):
 
-	return redirect('web:page', 'index')
+	return render(request, 'web/index.html')
 
 def page(request, path):
 
