@@ -8,5 +8,6 @@ urlpatterns = [
 	url(r'^people/(?P<fullname>.*)/$', views.people, name='people'),
 	url(r'^people/$', views.people, name='people_list'),
 	url(r'^(?P<path>.*)/$', views.page, name='page'),
+	url(r'', views.index, name='index'),
 ]
 

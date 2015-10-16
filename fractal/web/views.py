@@ -1,8 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.shortcuts import redirect
 import logging
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
 
 # Get an instance of a logger
 logger = logging.getLogger('django')
@@ -28,6 +33,10 @@ class PersonForm(ModelForm):
 		model = Person
 		fields = ['firstname', 'lastname', 'email', 'url', 'bio']
 
+def index(request):
+
+	return redirect('web:page', 'index')
+
 def page(request, path):
 
 	parts = path.split('/')
@@ -47,7 +56,7 @@ def page(request, path):
 
 	# Now try to find the page 
 	try:
-		page = Page.objects.get(slug=parts[-2], category=PageCategory)
+		page = Page.objects.get(slug=parts[-1], category=PageCategory)
 	except:
 		logging.error(parts)
 		raise Http404("Page does not exist: {}".format(parts))
@@ -73,7 +82,7 @@ def page(request, path):
 
 			page.save()
 
-			return redirect('page', path)
+			return redirect('web:page', path)
 
 		else:
 			raise Http404("Woah, what happened!")
@@ -163,3 +172,10 @@ def people(request, fullname=None):
 		else:
 			logging.error(form.errors)
 			return render(request, 'web/people.html', {'organisations':orgs, 'single':single, 'edit':edit, 'form':form})
+
+
+def logout_view(request):
+
+	logout(request)
+
+	return redirect('web:page', 'home')

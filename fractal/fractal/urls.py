@@ -24,6 +24,11 @@ import organisation.views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+
     url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^accounts/logout', 'web.views.logout_view', name='web-logout'),
+
     url('', include('web.urls', namespace='web')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+]

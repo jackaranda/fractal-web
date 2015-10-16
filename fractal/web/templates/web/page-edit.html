@@ -5,7 +5,7 @@
 {% block content %}
 <div class="form-group">
 
-<form method="post" action="{% url 'page' path %}">
+<form method="post" action="{% url 'web:page' path %}">
 	{% csrf_token %}
 	{{ page.owner }} at {{ page.created }}<br/>
 	<label for="id_title">Title</label>
