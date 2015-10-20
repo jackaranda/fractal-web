@@ -10,15 +10,17 @@
 
 {% block content %}
 
+<div class="container">
+
 {% for person in people %}
 {% if edit %}<form action="{% url 'web:people' person.fullname_underscore %}" method='post'>{% csrf_token %}{{ form.errors }}{% endif %}
 <div class='row'>
-	<div class='col-md-1'>
+	<div class='col-md-2'>
 		<center><img class='img-responsive img-rounded' src="/media/organisation/photos/{{ person.photo }}"></center>
 		{% if edit %}<label for"id_logo">Change logo</label>{{ form.logo }}{% endif %}
 	</div>
 
-	<div class='col-md-11'>
+	<div class='col-md-9'>
 	{% if edit %}
 		<label for"id_firstname">First name</label><input type="text" class="form-control" id="id_firstname" name="firstname" placeholder="First name" value="{{ person.firstname }}">
 		<label for"id_lastname">First name</label><input type="text" class="form-control" id="id_lastname" name="lastname" placeholder="First name" value="{{ person.lastname }}">
@@ -44,5 +46,8 @@
 	</div>
 </div>
 {% endfor %}
+
+<div class="container">
+
 
 {% endblock %}
