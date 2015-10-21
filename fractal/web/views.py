@@ -8,6 +8,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
+import sys
 
 # Get an instance of a logger
 logger = logging.getLogger('django')
@@ -45,18 +46,20 @@ def page(request, path):
 	user = request.user
 
 	# PageCategory may be None
-	PageCategory = None
+	category = None
 	
 	# Try and find the PageCategory path
-	for part in parts[:-2]:
+	for part in parts[:-1]:
+		logging.error('search for category {}'.format(part))
 		try:
-			PageCategory = PageCategory.objects.get(slug=part)
+			category = PageCategory.objects.get(slug=part)
 		except:
+			print sys.exc_info()
 			raise Http404("PageCategory does not exist: {}".format(part))
 
 	# Now try to find the page 
 	try:
-		page = Page.objects.get(slug=parts[-1], category=PageCategory)
+		page = Page.objects.get(slug=parts[-1], category=category)
 	except:
 		logging.error(parts)
 		raise Http404("Page does not exist: {}".format(parts))
@@ -67,9 +70,9 @@ def page(request, path):
 
 		if 'edit' in request.GET:
 			form = PageForm()
-			return render(request, 'web/page-edit.html', {'request':request, 'path': path, 'page':page, 'user':user, 'form':form})
+			return render(request, 'web/page.html', {'request':request, 'edit':True, 'path': path, 'page':page, 'user':user, 'form':form})
 		else:
-			return render(request, 'web/page.html', {'path': path, 'page':page, 'user':user})
+			return render(request, 'web/page.html', {'edit': False, 'path': path, 'page':page, 'user':user})
 
 	elif request.method == 'POST':
 
