@@ -1,3 +1,6 @@
+body {
+       padding-top: 200px;
+}
 
 .hero {
 	background-image: url('/static/web/img/osm_lusaka.png')
