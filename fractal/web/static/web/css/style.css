@@ -1,10 +1,18 @@
 
+.hero {
+	background-image: url('/static/web/img/osm_lusaka.png')
+}
+
 #bigblock {
 }
 
 #bigblock h1 {
 	font-size: 60pt;
-	font-style: italic;
+	font-style: bold;
+}
+
+#bigblock p {
+	background-color: white;
 }
 .statsblock {
 	height: 150px;
